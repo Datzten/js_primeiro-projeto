@@ -7,6 +7,8 @@ const footer = document.querySelector("footer");
 const amount = document.getElementById("amount");
 const currency = document.getElementById("currency");
 const form = document.querySelector("form");
+const description = document.getElementById("description");
+const result = document.getElementById("result");
 
 amount.addEventListener("input", () => {
     const hasCharactersRegex = /\D+/g
@@ -30,12 +32,23 @@ form.onsubmit = (event) => {
 
 function convertCurrency(rate, amount, symbol ) {
     try {
+        description.textContent = `${symbol} 1 = R$ ${formatCurrency(rate)}`;
         footer.classList.add("show-result");
-        const result = rate * amount;
-        return result;
+        
+        let total =rate * amount
+        result.textContent = `${formatCurrency(total).replace("R$", "")} Reais`;
+
     } catch (error) {
         console.error(error);
         alert("Não foi possível converter a moeda");
         footer.classList.remove("show-result");
     }
+}
+
+
+function formatCurrency(value) {
+    return (value).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+    });
 }
